@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BYUI Sociology: Age Calculator</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; color: #333; line-height: 1.6; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #002e5d; text-align: center; border-bottom: 2px solid #002e5d; padding-bottom: 10px; }
+        .intro { font-style: italic; text-align: center; margin-bottom: 30px; color: #555; }
+        .section { margin-bottom: 25px; padding: 15px; border-left: 5px solid #002e5d; background: #fafafa; }
+        .section h2 { margin-top: 0; color: #002e5d; font-size: 1.2rem; }
+        .question { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        select, input { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        button { display: block; width: 100%; padding: 15px; background: #002e5d; color: white; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #004a99; }
+        #results { margin-top: 30px; display: none; padding: 20px; border-radius: 8px; background: #e7f3ff; border: 1px solid #b3d7ff; }
+        .age-box { display: flex; justify-content: space-around; text-align: center; margin-top: 20px; }
+        .age-item { flex: 1; padding: 10px; }
+        .age-number { font-size: 2rem; font-weight: bold; color: #002e5d; }
+        .disclaimer { font-size: 0.8rem; color: #888; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Sociology 110: Age Calculator</h1>
+    <p class="intro">How old are you, <em>really</em>? In sociology, age is more than just a number on your I-Card. Calculate your 3 sociological ages below!</p>
+
+    <div class="question">
+        <label>First, what is your actual Chronological Age?</label>
+        <input type="number" id="chronoAge" value="20">
+    </div>
+
+    <!-- BIOLOGICAL AGE -->
+    <div class="section">
+        <h2>1. Biological Age (Your Body)</h2>
+        <div class="question">
+            <label>How many hours of sleep do you average during the semester?</label>
+            <select id="sleep">
+                <option value="-2">8+ hours (Living the dream)</option>
+                <option value="0">6-7 hours (Typical student)</option>
+                <option value="3">Less than 5 hours (Regularly closing the library)</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>How many "fizz" drinks or energy drinks do you consume daily?</label>
+            <select id="caffeine">
+                <option value="-1">0-1 (Hydrated and happy)</option>
+                <option value="1">2-3 (Keeping the caffeine shops in business)</option>
+                <option value="3">4+ (My blood is basically Monster Energy)</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>How often do you walk across campus in a Rexburg winter without a coat?</label>
+            <select id="weather">
+                <option value="0">Never, I'm sensible.</option>
+                <option value="2">Occasionally, if I'm running late to the Taylor building.</option>
+                <option value="5">Daily. I am impervious to the wind chill.</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- PSYCHOLOGICAL AGE -->
+    <div class="section">
+        <h2>2. Psychological Age (Your Mind)</h2>
+        <div class="question">
+            <label>When things get stressful (Midterms!), how do you react?</label>
+            <select id="stress">
+                <option value="-2">Stay calm and make a plan (Mature)</option>
+                <option value="0">Stress-eat some Tater Tot Casserole (Average)</option>
+                <option value="3">Call my parents and cry (Feeling young)</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>How "tech-savvy" do you feel compared to your peers?</label>
+            <select id="tech">
+                <option value="-2">I'm basically an AI (Young at heart)</option>
+                <option value="2">I still prefer a paper planner and a physical book (Old soul)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- SOCIAL AGE -->
+    <div class="section">
+        <h2>3. Social Age (Your Roles)</h2>
+        <div class="question">
+            <label>What is your current relationship/family status?</label>
+            <select id="socialRole">
+                <option value="0">Single (Traditional student role)</option>
+                <option value="5">Engaged/Married (Transitioned to "Adult" role early)</option>
+                <option value="10">Married with Children (High Social Age for college)</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>How much of your own bills/rent do you pay?</label>
+            <select id="money">
+                <option value="5">100% (High independence)</option>
+                <option value="2">Partial (Working a part-time campus job)</option>
+                <option value="-2">My parents handle it (Extended adolescence)</option>
+            </select>
+        </div>
+    </div>
+
+    <button onclick="calculateAges()">Calculate My Ages!</button>
+
+    <div id="results">
+        <h2 style="text-align: center;">Your Sociological Profile</h2>
+        <div class="age-box">
+            <div class="age-item">
+                <div>Biological</div>
+                <div class="age-number" id="resBio">0</div>
+            </div>
+            <div class="age-item">
+                <div>Psychological</div>
+                <div class="age-number" id="resPsych">0</div>
+            </div>
+            <div class="age-item">
+                <div>Social</div>
+                <div class="age-number" id="resSocial">0</div>
+            </div>
+        </div>
+        <div id="interpretation" style="margin-top:20px; font-weight:bold; color:#002e5d;"></div>
+        <p id="analysis"></p>
+    </div>
+
+    <p class="disclaimer">Note: This is a fun sociological exercise for SOC 110 and not a medical or psychological diagnosis. Your "Social Age" is influenced by the "Social Clock" of your specific culture (BYU-Idaho)!</p>
+</div>
+
+<script>
+    function calculateAges() {
+        const chrono = parseInt(document.getElementById('chronoAge').value);
+        
+        // Bio Age Logic
+        let bio = chrono + parseInt(document.getElementById('sleep').value) + 
+                  parseInt(document.getElementById('caffeine').value) + 
+                  parseInt(document.getElementById('weather').value);
+        
+        // Psych Age Logic
+        let psych = chrono + parseInt(document.getElementById('stress').value) + 
+                   parseInt(document.getElementById('tech').value);
+        
+        // Social Age Logic
+        let social = chrono + parseInt(document.getElementById('socialRole').value) + 
+                    parseInt(document.getElementById('money').value);
+
+        // Display results
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('resBio').innerText = bio;
+        document.getElementById('resPsych').innerText = psych;
+        document.getElementById('resSocial').innerText = social;
+
+        // Instructional Interpretation
+        let interpretation = "";
+        if (social > chrono + 5) {
+            interpretation = "You are 'Off-Target' on the Social Clock!";
+            document.getElementById('analysis').innerText = "In sociology, your Social Age is much higher than your chronological age. This is common at BYUI where students often take on 'adult' roles (marriage, career focus) earlier than the national average.";
+        } else if (social < chrono) {
+            interpretation = "You are in 'Emerging Adulthood'.";
+            document.getElementById('analysis').innerText = "Sociologist Jeffrey Arnett calls this 'Emerging Adulthood.' You are chronologically an adult but your social roles (depending on parents, focusing on self-development) are still in transition.";
+        } else {
+            interpretation = "You are 'On-Target' with society's expectations.";
+            document.getElementById('analysis').innerText = "Your social roles align perfectly with what society expects for your age group.";
+        }
+        document.getElementById('interpretation').innerText = interpretation;
+        
+        // Scroll to results
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
